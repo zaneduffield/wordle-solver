@@ -8,3 +8,5 @@ authors = ["Zane Duffield"]
 
 [dependencies]
 rustc-hash = "1.1.0"
+rayon = "1.5.1"
+rand = "0.8.4"
