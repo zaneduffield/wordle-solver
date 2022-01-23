@@ -1,10 +1,10 @@
 use std::cmp::Ordering;
 
-use rayon::prelude::*;
 use wordle::*;
 
 use rand::seq::SliceRandom;
 use rand::thread_rng;
+use rayon::prelude::*;
 
 #[derive(PartialEq)]
 struct NonNan(f64);
