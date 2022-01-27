@@ -1,10 +1,10 @@
-use std::cmp::Ordering;
-
-use wordle::*;
-
+use core::*;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 use rayon::prelude::*;
+use std::cmp::Ordering;
+
+use wordle::*;
 
 #[derive(PartialEq)]
 struct NonNan(f64);
@@ -26,14 +26,14 @@ impl Ord for NonNan {
 }
 
 fn main() {
-    let mut answers = include_str!("../../words/wordle-answers.txt")
+    let mut answers = include_str!("../words/wordle-answers.txt")
         .lines()
         .collect::<Vec<_>>();
 
     let all_words = answers
         .iter()
         .cloned()
-        .chain(include_str!("../../words/wordle-allowed-guesses.txt").lines())
+        .chain(include_str!("../words/wordle-allowed-guesses.txt").lines())
         .collect::<Vec<_>>();
 
     let mut average_words_after_guess = vec![0_f64; all_words.len()];

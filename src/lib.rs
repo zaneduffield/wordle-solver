@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use rayon::prelude::*;
 
 #[derive(Clone, Copy)]
@@ -185,32 +187,43 @@ pub fn first_guess<'a>() -> &'a str {
     "trace"
 }
 
-pub struct WordleErr(pub String);
+pub enum PollResult<Control> {
+    Control(Control),
+    Score(WordPattern),
+}
 
-pub fn play_game<'a, F>(
+pub enum SolverResult<Control> {
+    Control(Control),
+    Answer { word: String, guess_count: u32 },
+    NoAnswer,
+}
+
+pub fn run_solver<'a, F, Err: Display, Control>(
     guess: &str,
     mut answers: Vec<&'a str>,
     guesses: Vec<&'a str>,
     mut poll_guess_result: F,
-) -> Result<(String, u32), WordleErr>
+) -> Result<SolverResult<Control>, Err>
 where
-    F: FnMut(&str) -> WordPattern,
+    F: FnMut(&str) -> Result<PollResult<Control>, Err>,
 {
-    let mut count = 0;
+    let mut guess_count = 0;
     let mut guess = guess;
     loop {
-        count += 1;
-        let pattern = poll_guess_result(guess);
+        guess_count += 1;
+        let pattern = match poll_guess_result(guess)? {
+            PollResult::Control(c) => return Ok(SolverResult::Control(c)),
+            PollResult::Score(p) => p,
+        };
         if pattern.is_perfect_match() {
-            return Ok((guess.to_string(), count));
+            return Ok(SolverResult::Answer {
+                word: guess.to_string(),
+                guess_count,
+            });
         } else {
             filter_words(&pattern, &mut answers);
             guess = match best_guess(&guesses, &answers) {
-                None => {
-                    return Err(WordleErr(
-                        "Something went wrong; I couldn't find an answer.".to_string(),
-                    ))
-                }
+                None => return Ok(SolverResult::NoAnswer),
                 Some(x) => x,
             };
         }
@@ -225,11 +238,25 @@ mod tests {
         let mut games = Vec::with_capacity(answers.len());
         for answer in answers {
             let wordle = Wordle::new(answer);
-            let count = play_game(first_guess, answers.to_vec(), guesses.to_vec(), |guess| {
-                WordPattern::new(guess, wordle.check(guess))
-            })
-            .map(|(_, c)| c)
-            .unwrap_or(u32::MAX);
+            let count = match run_solver::<_, std::io::Error, ()>(
+                first_guess,
+                answers.to_vec(),
+                guesses.to_vec(),
+                |guess| {
+                    Ok(PollResult::Score(WordPattern::new(
+                        guess,
+                        wordle.check(guess),
+                    )))
+                },
+            )
+            .unwrap()
+            {
+                SolverResult::Answer {
+                    word: _,
+                    guess_count,
+                } => guess_count,
+                _ => u32::MAX,
+            };
 
             games.push((count, answer));
         }
