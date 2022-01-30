@@ -23,14 +23,28 @@ impl<'a> Wordle<'a> {
     }
 
     pub fn check(&self, guess: &str) -> GuessResult {
+        /* we need to loop through the chars twice because wordle will not mark
+        a character as 'wrong position' when it was marked as correct elsewhere */
         let mut out = [CharResult::Incorrect; WORD_LEN];
-        for (i, c) in guess.chars().enumerate() {
-            if self.word.chars().nth(i) == Some(c) {
-                out[i] = CharResult::Correct;
-            } else if self.word.chars().any(|c2| c == c2) {
-                out[i] = CharResult::CorrectChar;
+
+        // first mark all the correct chars, and store all chars that were missed
+        let mut missed_chars = ['\0'; WORD_LEN];
+        let mut count = 0;
+        for ((g, w), o) in guess.chars().zip(self.word.chars()).zip(out.iter_mut()) {
+            if g == w {
+                *o = CharResult::Correct;
+            } else {
+                missed_chars[count] = w;
+                count += 1;
             }
         }
+
+        // mark all guess chars that were 'missed'
+        guess
+            .chars()
+            .zip(out.iter_mut())
+            .filter(|(g, o)| !matches!(o, CharResult::Correct) && missed_chars.contains(g))
+            .for_each(|(_, o)| *o = CharResult::CorrectChar);
 
         out
     }
