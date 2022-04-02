@@ -9,7 +9,7 @@ use crossterm::{
     event::{KeyCode, KeyEvent, KeyModifiers},
     execute, queue,
     style::{self, Color, ContentStyle, StyledContent, Stylize},
-    terminal::{self, enable_raw_mode},
+    terminal::{self, disable_raw_mode, enable_raw_mode},
 };
 
 pub const CORRECT_COL_PAIR: Color = Color::Green;
@@ -68,6 +68,7 @@ pub fn init(stdout: &mut Stdout) -> crossterm::Result<()> {
 
 pub fn fini(stdout: &mut Stdout) -> crossterm::Result<()> {
     execute!(stdout, terminal::LeaveAlternateScreen, cursor::Show)?;
+    disable_raw_mode()?;
     exit(0);
 }
 
