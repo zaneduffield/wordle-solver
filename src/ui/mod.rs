@@ -14,7 +14,8 @@ use crossterm::{
 
 pub const CORRECT_COL: Color = Color::Green;
 pub const CORRECT_CHAR_COL: Color = Color::Yellow;
-pub const INCORRECT_COL: Color = Color::Reset;
+pub const UNKNOWN_CHAR_COL: Color = Color::Reset;
+pub const INCORRECT_COL: Color = Color::DarkGrey;
 pub const SELECTED_COL: Color = Color::Red;
 
 const RESTART_KEY_DESC: &str = "Control-R";
@@ -162,7 +163,7 @@ pub fn draw_char(
     let wordle_char = WordleChar {
         c,
         window,
-        result: CharResult::Incorrect,
+        result: CharResult::Unknown,
     };
 
     draw_border(stdout, &wordle_char)?;
@@ -176,6 +177,7 @@ pub fn result_col(result: CharResult) -> Color {
         CharResult::Correct => CORRECT_COL,
         CharResult::CorrectChar => CORRECT_CHAR_COL,
         CharResult::Incorrect => INCORRECT_COL,
+        CharResult::Unknown => UNKNOWN_CHAR_COL,
     }
 }
 

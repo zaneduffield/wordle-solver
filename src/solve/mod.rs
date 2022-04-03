@@ -49,6 +49,7 @@ fn up(stdout: &mut Stdout, c: &mut WordleChar) -> crossterm::Result<()> {
         CharResult::Correct => CharResult::Incorrect,
         CharResult::CorrectChar => CharResult::Correct,
         CharResult::Incorrect => CharResult::CorrectChar,
+        CharResult::Unknown => CharResult::Unknown,
     };
     update_char(stdout, c, true)?;
     Ok(())
@@ -59,6 +60,7 @@ fn down(stdout: &mut Stdout, c: &mut WordleChar) -> crossterm::Result<()> {
         CharResult::Correct => CharResult::CorrectChar,
         CharResult::CorrectChar => CharResult::Incorrect,
         CharResult::Incorrect => CharResult::Correct,
+        CharResult::Unknown => CharResult::Unknown,
     };
     update_char(stdout, c, true)?;
     Ok(())

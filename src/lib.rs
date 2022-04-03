@@ -2,8 +2,9 @@ use std::fmt::Display;
 
 use rayon::prelude::*;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 pub enum CharResult {
+    Unknown,
     Incorrect,
     CorrectChar,
     Correct,
@@ -77,6 +78,7 @@ impl WordPattern {
                     bad_chars.push(char);
                     bad_chars_by_pos[i].push(char);
                 }
+                CharResult::Unknown => {}
             }
         }
 
