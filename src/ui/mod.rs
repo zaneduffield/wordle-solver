@@ -14,7 +14,7 @@ use crossterm::{
 
 pub const CORRECT_COL_PAIR: Color = Color::Green;
 pub const CORRECT_CHAR_COL_PAIR: Color = Color::Yellow;
-pub const INCORRECT_COL_PAIR: Color = Color::Reset;
+pub const INCORRECT_COL_PAIR: Color = Color::DarkGrey;
 pub const SELECTED_COL: Color = Color::Red;
 
 const RESTART_KEY_DESC: &str = "Control-R";

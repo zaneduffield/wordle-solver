@@ -1,8 +1,10 @@
 use std::io::Stdout;
 
 use std::io::stdout;
+use std::io::Write;
 
 use crossterm::cursor;
+use crossterm::queue;
 use crossterm::style::Color;
 use crossterm::style::Stylize;
 use crossterm::{
@@ -103,6 +105,56 @@ fn print_intro(stdout: &mut Stdout) -> crossterm::Result<()> {
     Ok(())
 }
 
+struct Keyb {
+    rows: [(String, Vec<(char, CharResult)>); 3],
+}
+
+impl Keyb {
+    fn new() -> Keyb {
+        let make_row = |chars: &str| chars.chars().map(|c| (c, CharResult::Incorrect)).collect();
+        let top = "QWERTYUIOP";
+        let mid = "ASDFGHJKL";
+        let bot = "ZXCVBNM";
+        Keyb {
+            rows: [
+                ("      ".to_string(), make_row(top)),
+                ("       ".to_string(), make_row(mid)),
+                ("        ".to_string(), make_row(bot)),
+            ],
+        }
+    }
+}
+
+fn print_keyb(stdout: &mut Stdout, keyb: &mut Keyb, row: u16, col: u16) -> crossterm::Result<()> {
+    queue!(stdout, cursor::MoveTo(col, row))?;
+
+    for (pad, row) in &keyb.rows {
+        queue!(stdout, style::Print(pad))?;
+        for (c, r) in row {
+            queue!(
+                stdout,
+                style::PrintStyledContent(c.with(result_col(*r))),
+                style::Print(" ")
+            )?;
+        }
+        queue!(stdout, style::Print("\r\n"))?;
+    }
+    queue!(stdout, style::Print("\r\n"))?;
+    stdout.flush()?;
+
+    Ok(())
+}
+
+fn update_keyb(keyb: &mut Keyb, guess: &str, score: GuessResult) {
+    for (_, row) in &mut keyb.rows {
+        for (gc, gr) in guess.chars().zip(score) {
+            row.iter_mut()
+                .filter(|(c, r)| gc.eq_ignore_ascii_case(c) && *r != CharResult::Correct)
+                .for_each(|(_, r)| *r = gr);
+        }
+    }
+}
+
 pub fn play(answer: Option<&String>) -> crossterm::Result<()> {
     let answer = answer.map(|s| s.as_str());
 
@@ -116,6 +168,9 @@ pub fn play(answer: Option<&String>) -> crossterm::Result<()> {
     'game: loop {
         init(stdout)?;
         print_intro(stdout)?;
+        let mut keyb = Keyb::new();
+        let (keyb_col, keyb_row) = (0, cursor::position()?.1);
+        print_keyb(stdout, &mut keyb, keyb_row, keyb_col)?;
 
         let word = answer.unwrap_or_else(|| answers.choose(&mut thread_rng()).unwrap());
         let wordle = Wordle::new(word);
@@ -133,6 +188,11 @@ pub fn play(answer: Option<&String>) -> crossterm::Result<()> {
 
             let score = wordle.check(&guess);
             score_guess(stdout, &mut word, score)?;
+
+            execute!(stdout, cursor::SavePosition)?;
+            update_keyb(&mut keyb, &guess, score);
+            print_keyb(stdout, &mut keyb, keyb_row, keyb_col)?;
+            execute!(stdout, cursor::RestorePosition)?;
 
             if score.iter().all(|r| matches!(r, CharResult::Correct)) {
                 execute!(stdout, style::Print("\r\n\n"))?;
