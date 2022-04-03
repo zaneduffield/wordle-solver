@@ -1,8 +1,8 @@
-use std::fmt::Display;
+use std::{fmt::Display};
 
 use rayon::prelude::*;
 
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub enum CharResult {
     Unknown,
     Incorrect,
@@ -197,7 +197,7 @@ pub fn best_guess<'a>(guess_pool: &[&'a str], answer_pool: &[&'a str]) -> Option
     }
 }
 
-pub fn first_guess<'a>() -> &'a str {
+pub const fn first_guess<'a>() -> &'a str {
     // other good first guesses include:
     //   "roate", "raile", "arise", "irate", "orate", "ariel", "raine"
     "trace"

@@ -10,6 +10,10 @@ authors = ["Zane Duffield"]
 name = "stats"
 path = "src/stats.rs"
 
+[[bin]]
+name = "precompute"
+path = "src/precompute.rs"
+
 [dependencies]
 rustc-hash = "1.1.0"
 rayon = "1.5.3"
