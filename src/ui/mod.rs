@@ -12,9 +12,9 @@ use crossterm::{
     terminal::{self, disable_raw_mode, enable_raw_mode},
 };
 
-pub const CORRECT_COL_PAIR: Color = Color::Green;
-pub const CORRECT_CHAR_COL_PAIR: Color = Color::Yellow;
-pub const INCORRECT_COL_PAIR: Color = Color::Reset;
+pub const CORRECT_COL: Color = Color::Green;
+pub const CORRECT_CHAR_COL: Color = Color::Yellow;
+pub const INCORRECT_COL: Color = Color::Reset;
 pub const SELECTED_COL: Color = Color::Red;
 
 const RESTART_KEY_DESC: &str = "Control-R";
@@ -75,9 +75,9 @@ pub fn fini(stdout: &mut Stdout) -> crossterm::Result<()> {
 pub fn print_colour_explanation(stdout: &mut Stdout) -> crossterm::Result<()> {
     execute!(
         stdout,
-        style::PrintStyledContent("\r\ncorrect".with(CORRECT_COL_PAIR)),
-        style::PrintStyledContent("    wrong position".with(CORRECT_CHAR_COL_PAIR)),
-        style::PrintStyledContent("    incorrect".with(INCORRECT_COL_PAIR)),
+        style::PrintStyledContent("\r\ncorrect".with(CORRECT_COL)),
+        style::PrintStyledContent("    wrong position".with(CORRECT_CHAR_COL)),
+        style::PrintStyledContent("    incorrect".with(INCORRECT_COL)),
         style::Print("\n\r"),
     )?;
 
@@ -173,9 +173,9 @@ pub fn draw_char(
 
 pub fn result_col(result: CharResult) -> Color {
     match result {
-        CharResult::Correct => CORRECT_COL_PAIR,
-        CharResult::CorrectChar => CORRECT_CHAR_COL_PAIR,
-        CharResult::Incorrect => INCORRECT_COL_PAIR,
+        CharResult::Correct => CORRECT_COL,
+        CharResult::CorrectChar => CORRECT_CHAR_COL,
+        CharResult::Incorrect => INCORRECT_COL,
     }
 }
 
