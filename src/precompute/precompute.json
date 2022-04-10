@@ -1,0 +1,730 @@
+{
+    "data": [
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "solid"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "sonly"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "olein"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "solei"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "shout"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Correct"
+            ],
+            "best_guess": "loids"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "duros"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "rayon"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "slipt"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "sluit"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "bling"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "sklim"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "laden"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect"
+            ],
+            "best_guess": "cumin"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "Correct"
+            ],
+            "best_guess": "alums"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "apgar"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "Correct"
+            ],
+            "best_guess": "girsh"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Correct",
+                "Incorrect"
+            ],
+            "best_guess": "choil"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "Correct"
+            ],
+            "best_guess": "glisk"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar",
+                "Incorrect"
+            ],
+            "best_guess": "cibol"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "short"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "retro"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Correct",
+                "Correct",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "binds"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "Incorrect",
+                "Correct"
+            ],
+            "best_guess": "doups"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "flisk"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Correct"
+            ],
+            "best_guess": "utile"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Correct",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "banty"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "filed"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "steam"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect"
+            ],
+            "best_guess": "choil"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "Correct",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "dhols"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Correct",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "ahind"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Correct",
+                "CorrectChar",
+                "Incorrect"
+            ],
+            "best_guess": "amyls"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar",
+                "Correct"
+            ],
+            "best_guess": "close"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Correct",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "fruit"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Correct",
+                "Correct"
+            ],
+            "best_guess": "neifs"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "Correct"
+            ],
+            "best_guess": "gelts"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar"
+            ],
+            "best_guess": "cored"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Correct",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "doyen"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar",
+                "CorrectChar",
+                "Incorrect"
+            ],
+            "best_guess": "coral"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Correct",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "ardor"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "amyls"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar"
+            ],
+            "best_guess": "dicey"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect"
+            ],
+            "best_guess": "psion"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "CorrectChar",
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "almeh"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "CorrectChar",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "satyr"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Correct",
+                "Correct",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "alkos"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "Correct",
+                "Incorrect"
+            ],
+            "best_guess": "bipod"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Correct",
+                "Correct",
+                "Incorrect"
+            ],
+            "best_guess": "bhels"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect",
+                "Correct"
+            ],
+            "best_guess": "bahus"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Correct",
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "butoh"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "leash"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Correct",
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Correct"
+            ],
+            "best_guess": "apish"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "Correct",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "ready"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "Incorrect",
+                "Correct",
+                "CorrectChar"
+            ],
+            "best_guess": "plebe"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect"
+            ],
+            "best_guess": "scout"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Correct",
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar"
+            ],
+            "best_guess": "kidel"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar",
+                "CorrectChar"
+            ],
+            "best_guess": "coled"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar",
+                "Incorrect",
+                "Correct"
+            ],
+            "best_guess": "abies"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar",
+                "Correct",
+                "Incorrect"
+            ],
+            "best_guess": "clomb"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar",
+                "Incorrect"
+            ],
+            "best_guess": "atopy"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Correct",
+                "Incorrect",
+                "CorrectChar",
+                "Incorrect"
+            ],
+            "best_guess": "crypt"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "Incorrect",
+                "Incorrect",
+                "CorrectChar",
+                "CorrectChar"
+            ],
+            "best_guess": "cames"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "CorrectChar",
+                "CorrectChar",
+                "Correct",
+                "Incorrect",
+                "Incorrect"
+            ],
+            "best_guess": "muist"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Correct",
+                "Correct",
+                "CorrectChar",
+                "Incorrect"
+            ],
+            "best_guess": "amyls"
+        },
+        {
+            "init_guess": "trace",
+            "result": [
+                "Incorrect",
+                "Correct",
+                "CorrectChar",
+                "Incorrect",
+                "CorrectChar"
+            ],
+            "best_guess": "break"
+        }
+    ]
+}
