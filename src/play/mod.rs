@@ -118,9 +118,9 @@ impl Keyb {
         let bot = "ZXCVBNM";
         Keyb {
             rows: [
-                ("      ".to_string(), make_row(top)),
-                ("       ".to_string(), make_row(mid)),
-                ("        ".to_string(), make_row(bot)),
+                ("     ".to_string(), make_row(top)),
+                ("      ".to_string(), make_row(mid)),
+                ("       ".to_string(), make_row(bot)),
             ],
         }
     }

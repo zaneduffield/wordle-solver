@@ -6,6 +6,10 @@ use std::cmp::Ordering;
 
 use wordle::*;
 
+mod solve;
+mod ui;
+mod precompute;
+
 #[derive(PartialEq)]
 struct NonNan(f64);
 
@@ -45,7 +49,7 @@ fn main() {
     for answer in answers.iter().take(test_size) {
         println!("testing '{}' as the wordle", answer);
         let wordle = Wordle::new(answer);
-        let solver = Solver::new(wordle);
+        let solver = solve::Solver::new(wordle);
         let words_after_guesses = all_words
             .par_iter()
             .map(|guess| solver.num_filtered_words(guess, &answers) as f64 / test_size as f64)

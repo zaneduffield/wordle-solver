@@ -163,7 +163,7 @@ pub fn draw_char(
     let wordle_char = WordleChar {
         c,
         window,
-        result: CharResult::Unknown,
+        result: CharResult::Incorrect,
     };
 
     draw_border(stdout, &wordle_char)?;
