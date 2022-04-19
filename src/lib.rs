@@ -128,4 +128,3 @@ pub fn answers() -> Vec<&'static str> {
         .lines()
         .collect::<Vec<_>>()
 }
-
