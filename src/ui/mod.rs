@@ -8,7 +8,7 @@ use crossterm::{
     cursor,
     event::{KeyCode, KeyEvent, KeyModifiers},
     execute, queue,
-    style::{self, Color, ContentStyle, StyledContent, Stylize},
+    style::{self, Attribute, Color, ContentStyle, StyledContent, Stylize},
     terminal::{self, disable_raw_mode, enable_raw_mode},
 };
 
@@ -25,6 +25,7 @@ const QUIT_CODE: KeyCode = KeyCode::Esc;
 pub enum GameControl {
     Restart,
     Quit,
+    Debug,
 }
 
 pub const SIDE_BUFF: u16 = 2;
@@ -35,15 +36,19 @@ pub const CELL_BUFF: u16 = 0;
 pub const CHAR_POS_Y: u16 = 1;
 pub const CHAR_POS_X: u16 = 2;
 
+#[derive(Clone)]
 pub struct ScreenPos {
     pub col: u16,
     pub row: u16,
 }
+
+#[derive(Clone)]
 pub struct ScreenSize {
     pub cols: u16,
     pub rows: u16,
 }
 
+#[derive(Clone)]
 pub struct Window {
     pub pos: ScreenPos,
     pub size: ScreenSize,
@@ -106,6 +111,17 @@ pub fn print_solved_msg(stdout: &mut Stdout, guess_count: u32) -> crossterm::Res
     )
 }
 
+pub fn clear_box(stdout: &mut Stdout, window: &Window) -> crossterm::Result<()> {
+    let (cols, rows) = terminal::size()?;
+    for y in window.pos.row..(window.pos.row + window.size.rows).min(rows) {
+        for x in window.pos.col..(window.pos.col + window.size.cols).min(cols) {
+            queue!(stdout, cursor::MoveTo(x, y), style::Print(' '),)?;
+        }
+    }
+    stdout.flush()?;
+    Ok(())
+}
+
 pub fn draw_box(
     stdout: &mut Stdout,
     window: &Window,
@@ -145,6 +161,101 @@ pub fn draw_box(
     }
     stdout.flush()?;
     Ok(())
+}
+
+pub fn draw_word_list(
+    stdout: &mut Stdout,
+    title: &str,
+    window: &Window,
+    col: Color,
+    words: &[&str],
+    num_words: usize,
+) -> crossterm::Result<()> {
+    queue!(stdout, cursor::SavePosition)?;
+    draw_box(stdout, window, &ContentStyle::new().with(col))?;
+    queue!(
+        stdout,
+        cursor::MoveTo(window.pos.col + 2, window.pos.row as u16),
+        style::PrintStyledContent(title.with(col)),
+    )?;
+
+    for i in 0..num_words {
+        queue!(
+            stdout,
+            cursor::MoveTo(window.pos.col + 1, window.pos.row + i as u16 + 1),
+            style::PrintStyledContent(format!("{}. ", i + 1).with(col)),
+        )?;
+
+        match words.get(i) {
+            Some(word) => queue!(stdout, style::Print(word))?,
+            None => queue!(stdout, style::Print(" ".repeat(WORD_LEN)))?,
+        }
+    }
+    queue!(stdout, cursor::RestorePosition)?;
+    stdout.flush()?;
+
+    Ok(())
+}
+
+pub struct Keyb {
+    rows: [(String, Vec<(char, CharResult)>); 3],
+}
+
+impl Keyb {
+    pub fn new() -> Keyb {
+        let make_row = |chars: &str| chars.chars().map(|c| (c, CharResult::Unknown)).collect();
+        let top = "QWERTYUIOP";
+        let mid = "ASDFGHJKL";
+        let bot = "ZXCVBNM";
+        Keyb {
+            rows: [
+                ("     ".to_string(), make_row(top)),
+                ("      ".to_string(), make_row(mid)),
+                ("       ".to_string(), make_row(bot)),
+            ],
+        }
+    }
+}
+
+pub fn print_keyb(
+    stdout: &mut Stdout,
+    keyb: &mut Keyb,
+    row: u16,
+    col: u16,
+) -> crossterm::Result<()> {
+    queue!(stdout, cursor::MoveTo(col, row))?;
+
+    for (pad, row) in &keyb.rows {
+        queue!(stdout, style::Print(pad))?;
+        for (c, r) in row {
+            let attr = if r == &CharResult::Incorrect {
+                Attribute::Dim
+            } else {
+                Attribute::Bold
+            };
+            let styled_c = c.with(result_col(*r)).attribute(attr);
+            queue!(
+                stdout,
+                style::PrintStyledContent(styled_c),
+                style::Print(" ")
+            )?;
+        }
+        queue!(stdout, style::Print("\r\n"))?;
+    }
+    queue!(stdout, style::Print("\r\n"))?;
+    stdout.flush()?;
+
+    Ok(())
+}
+
+pub fn update_keyb(keyb: &mut Keyb, guess: &str, score: GuessResult) {
+    for (_, row) in &mut keyb.rows {
+        for (gc, gr) in guess.chars().zip(score) {
+            row.iter_mut()
+                .filter(|(c, r)| gc.eq_ignore_ascii_case(c) && *r != CharResult::Correct)
+                .for_each(|(_, r)| *r = gr);
+        }
+    }
 }
 
 pub fn draw_char(

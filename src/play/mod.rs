@@ -1,11 +1,8 @@
 use std::io::Stdout;
 
 use std::io::stdout;
-use std::io::Write;
 
 use crossterm::cursor;
-use crossterm::queue;
-use crossterm::style::Attribute;
 use crossterm::style::Color;
 use crossterm::style::Stylize;
 use crossterm::{
@@ -18,6 +15,7 @@ use rand::prelude::SliceRandom;
 use rand::thread_rng;
 use rustc_hash::FxHashSet;
 
+use crate::solve;
 use crate::ui::*;
 use wordle::*;
 
@@ -63,6 +61,7 @@ fn poll_guess(
                 _ if is_restart_event(event) => {
                     return Ok(PollResult::Control(GameControl::Restart))
                 }
+                KeyCode::Char('?') => return Ok(PollResult::Control(GameControl::Debug)),
                 KeyCode::Char(c) => {
                     if i < word.len() {
                         word[i].c = c.to_ascii_lowercase();
@@ -106,62 +105,6 @@ fn print_intro(stdout: &mut Stdout) -> crossterm::Result<()> {
     Ok(())
 }
 
-struct Keyb {
-    rows: [(String, Vec<(char, CharResult)>); 3],
-}
-
-impl Keyb {
-    fn new() -> Keyb {
-        let make_row = |chars: &str| chars.chars().map(|c| (c, CharResult::Unknown)).collect();
-        let top = "QWERTYUIOP";
-        let mid = "ASDFGHJKL";
-        let bot = "ZXCVBNM";
-        Keyb {
-            rows: [
-                ("     ".to_string(), make_row(top)),
-                ("      ".to_string(), make_row(mid)),
-                ("       ".to_string(), make_row(bot)),
-            ],
-        }
-    }
-}
-
-fn print_keyb(stdout: &mut Stdout, keyb: &mut Keyb, row: u16, col: u16) -> crossterm::Result<()> {
-    queue!(stdout, cursor::MoveTo(col, row))?;
-
-    for (pad, row) in &keyb.rows {
-        queue!(stdout, style::Print(pad))?;
-        for (c, r) in row {
-            let attr = if r == &CharResult::Incorrect {
-                Attribute::Dim
-            } else {
-                Attribute::Bold
-            };
-            let styled_c = c.with(result_col(*r)).attribute(attr);
-            queue!(
-                stdout,
-                style::PrintStyledContent(styled_c),
-                style::Print(" ")
-            )?;
-        }
-        queue!(stdout, style::Print("\r\n"))?;
-    }
-    queue!(stdout, style::Print("\r\n"))?;
-    stdout.flush()?;
-
-    Ok(())
-}
-
-fn update_keyb(keyb: &mut Keyb, guess: &str, score: GuessResult) {
-    for (_, row) in &mut keyb.rows {
-        for (gc, gr) in guess.chars().zip(score) {
-            row.iter_mut()
-                .filter(|(c, r)| gc.eq_ignore_ascii_case(c) && *r != CharResult::Correct)
-                .for_each(|(_, r)| *r = gr);
-        }
-    }
-}
-
 pub fn play(answer: Option<&String>) -> crossterm::Result<()> {
     let answer = answer.map(|s| s.as_str());
 
@@ -183,12 +126,19 @@ pub fn play(answer: Option<&String>) -> crossterm::Result<()> {
         let wordle = Wordle::new(word);
 
         let (col, mut row) = (0, cursor::position()?.1);
+        let mut helper = solve::Helper::new(col + 35, row);
         let mut guess_count = 0;
         'guess: loop {
+            let old_row = row;
             let mut word = draw_word(stdout, &" ".repeat(WORD_LEN), col, &mut row)?;
             let guess = match poll_guess(stdout, &mut word, &valid_guesses)? {
                 PollResult::Control(GameControl::Quit) => break 'game,
                 PollResult::Control(GameControl::Restart) => continue 'game,
+                PollResult::Control(GameControl::Debug) => {
+                    row = old_row;
+                    helper.toggle(stdout)?;
+                    continue 'guess;
+                }
                 PollResult::Guess(guess) => guess,
             };
             guess_count += 1;
@@ -200,6 +150,8 @@ pub fn play(answer: Option<&String>) -> crossterm::Result<()> {
             update_keyb(&mut keyb, &guess, score);
             print_keyb(stdout, &mut keyb, keyb_row, keyb_col)?;
             execute!(stdout, cursor::RestorePosition)?;
+
+            helper.update(stdout, guess, score)?;
 
             if score.iter().all(|r| matches!(r, CharResult::Correct)) {
                 execute!(stdout, style::Print("\r\n\n"))?;

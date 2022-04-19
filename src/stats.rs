@@ -6,9 +6,9 @@ use std::cmp::Ordering;
 
 use wordle::*;
 
+mod precompute;
 mod solve;
 mod ui;
-mod precompute;
 
 #[derive(PartialEq)]
 struct NonNan(f64);

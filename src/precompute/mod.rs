@@ -6,8 +6,8 @@ use rustc_hash::FxHashSet;
 use serde::Deserialize;
 use serde::Serialize;
 
-use wordle::*;
 use crate::solve::*;
+use wordle::*;
 
 const RESULTS: [CharResult; 3] = [
     CharResult::Incorrect,

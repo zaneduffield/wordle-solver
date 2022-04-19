@@ -156,6 +156,29 @@ pub fn filter_words(pattern: &WordPattern, words: &mut Vec<&str>) {
     }
 }
 
+#[inline]
+pub fn max_num_words_after_guess(guess: &str, guess_pool: &[&str]) -> usize {
+    match guess_pool
+        .iter()
+        .map(|a| Solver::new(Wordle::new(a)))
+        .map(|s| s.num_filtered_words(guess, guess_pool))
+        .max()
+    {
+        None | Some(0) => usize::MAX,
+        Some(x) => x,
+    }
+}
+
+pub fn best_guesses<'a>(
+    guess_pool: &[&'a str],
+    answer_pool: &[&'a str],
+    num_guesses: usize,
+) -> Vec<&'a str> {
+    let mut ranked_guesses = guess_pool.to_vec();
+    ranked_guesses.par_sort_by_key(|&guess| max_num_words_after_guess(guess, answer_pool));
+    ranked_guesses.into_iter().take(num_guesses).collect()
+}
+
 pub fn best_guess<'a>(guess_pool: &[&'a str], answer_pool: &[&'a str]) -> Option<&'a str> {
     /*
         We want the word with the minimal positive maximum number of filtered words.
@@ -178,20 +201,7 @@ pub fn best_guess<'a>(guess_pool: &[&'a str], answer_pool: &[&'a str]) -> Option
             .par_iter()
             .chain(guess_pool)
             .enumerate()
-            .min_by_key(|&(i, guess)| {
-                (
-                    match answer_pool
-                        .iter()
-                        .map(|a| Solver::new(Wordle::new(a)))
-                        .map(|s| s.num_filtered_words(guess, answer_pool))
-                        .max()
-                    {
-                        None | Some(0) => usize::MAX,
-                        Some(x) => x,
-                    },
-                    i,
-                )
-            })
+            .min_by_key(|&(i, guess)| (max_num_words_after_guess(guess, answer_pool), i))
             .map(|(_, x)| *x),
     }
 }
@@ -200,6 +210,107 @@ pub const fn first_guess<'a>() -> &'a str {
     // other good first guesses include:
     //   "roate", "raile", "arise", "irate", "orate", "ariel", "raine"
     "trace"
+}
+
+pub struct Helper<'a> {
+    answers: Vec<&'a str>,
+    guesses: Vec<&'a str>,
+    num_words: usize,
+    window: Window,
+    alt_window: Window,
+    visible: bool,
+    is_filtered: bool,
+    unapplied_results: Vec<(String, GuessResult)>,
+}
+
+impl<'a> Helper<'a> {
+    pub fn new(col: u16, row: u16) -> Helper<'a> {
+        let window = Window {
+            pos: ScreenPos { col, row },
+            size: ScreenSize {
+                cols: WORD_LEN as u16 + 5,
+                rows: 5 + 2,
+            },
+        };
+        let mut alt_window = window.clone();
+        alt_window.pos.col += window.size.cols + 1;
+
+        Helper {
+            answers: answers(),
+            guesses: guesses(),
+            num_words: 5,
+            window,
+            alt_window,
+            visible: false,
+            is_filtered: false,
+            unapplied_results: vec![],
+        }
+    }
+
+    pub fn toggle(&mut self, stdout: &mut Stdout) -> crossterm::Result<()> {
+        self.visible = !self.visible;
+        if self.visible {
+            let unapplied = self.unapplied_results.drain(..).collect::<Vec<_>>();
+            for (g, r) in unapplied {
+                self.apply(g, r);
+            }
+            self.draw(stdout)
+        } else {
+            self.clear(stdout)
+        }
+    }
+
+    fn apply(&mut self, guess: String, result: GuessResult) {
+        filter_words(&WordPattern::new(&guess, result), &mut self.answers);
+        self.is_filtered = true;
+    }
+
+    pub fn update(
+        &mut self,
+        stdout: &mut Stdout,
+        guess: String,
+        result: GuessResult,
+    ) -> crossterm::Result<()> {
+        if !self.visible {
+            self.unapplied_results.push((guess, result));
+            return Ok(());
+        }
+        self.apply(guess, result);
+        self.draw(stdout)
+    }
+
+    fn clear(&self, stdout: &mut Stdout) -> crossterm::Result<()> {
+        clear_box(stdout, &self.window).and_then(|_| clear_box(stdout, &self.alt_window))
+    }
+
+    fn draw(&self, stdout: &mut Stdout) -> crossterm::Result<()> {
+        draw_word_list(
+            stdout,
+            "answers",
+            &self.window,
+            Color::Cyan,
+            &if self.is_filtered {
+                best_guesses(&self.answers, &self.answers, self.num_words)
+            } else {
+                vec![]
+            },
+            self.num_words,
+        )?;
+        draw_word_list(
+            stdout,
+            "guesses",
+            &self.alt_window,
+            Color::Magenta,
+            &if self.is_filtered {
+                best_guesses(&self.guesses, &self.answers, self.num_words)
+            } else {
+                vec![]
+            },
+            self.num_words,
+        )?;
+
+        Ok(())
+    }
 }
 
 pub enum PollResult<Control> {
@@ -283,6 +394,7 @@ where
             } => print_solved_msg(stdout, guess_count)?,
             SolverResult::Control(GameControl::Restart) => continue 'game,
             SolverResult::Control(GameControl::Quit) => break 'game,
+            SolverResult::Control(GameControl::Debug) => {}
         }
 
         print_controls_explanation(stdout)?;

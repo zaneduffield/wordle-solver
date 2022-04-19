@@ -1,9 +1,9 @@
 use clap::{Parser, Subcommand};
 
 mod play;
+mod precompute;
 mod solve;
 mod ui;
-mod precompute;
 
 #[derive(Parser)]
 #[clap(name = "wordle")]
